@@ -10,7 +10,12 @@ const saveButton = document.querySelector("#saveButton");
 saveButton.addEventListener("click", () => save());
 
 const encryptionButton = document.querySelector("#encryptionButton");
-encryptionButton.addEventListener("click", () => encryptionPicture());
+encryptionButton.addEventListener("click", () =>
+  encryption(pictureDate.pixels, canvas)
+);
+
+const myCanvas = document.querySelector("#myCanvas");
+myCanvas.addEventListener("render", (e) => encryptionPicture(e));
 
 window.addEventListener("load", function () {
   document
@@ -35,8 +40,10 @@ const Canvas = function (canvasEl, width, height) {
   this.ctx = canvasEl.getContext("2d");
 };
 
-const encryptionPicture = () => {
-  const encryptionPixels = encryption(pictureDate.pixels);
+const encryptionPicture = (e) => {
+  // TODO: add e.pictureValue
+  const encryptionPixels = e.detail;
+
   for (let i = 0, j = 0; i < pictureDate.pixels.data.length; i += 4, j += 3) {
     pictureDate.pixels.data[i] = encryptionPixels[j];
     pictureDate.pixels.data[i + 1] = encryptionPixels[j + 1];
