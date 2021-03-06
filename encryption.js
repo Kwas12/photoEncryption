@@ -1,5 +1,9 @@
 let roundKeys = [];
 let pt = "";
+let loopHowMany = 0;
+let image = [];
+let rgbCount = 0;
+let encryptedImage = [];
 
 const shiftLeftOnce = (keyChunk) => {
   let shifted = "";
@@ -35,6 +39,17 @@ const xor = (stringA, stringB) => {
   }
 
   return result;
+};
+
+const convertDecimalToBinary8 = (number) => {
+  let stringNumber = parseInt(number + "", 10).toString(2);
+
+  while (stringNumber.length < 8) {
+    stringNumber = "0" + stringNumber;
+  }
+
+  // console.log(stringNumber);
+  return stringNumber;
 };
 
 const convertDecimalToBinary = (number) => {
@@ -325,38 +340,107 @@ const DES = () => {
   return cipherText;
 };
 
-const encryption = () => {
+const loop = (howManyTime, count) => {
+  for (let i = 0; i < howManyTime / 8; i++) {
+    pt =
+      convertDecimalToBinary8(image[rgbCount]) +
+      convertDecimalToBinary8(image[++rgbCount]) +
+      convertDecimalToBinary8(image[++rgbCount]) +
+      convertDecimalToBinary8(image[++rgbCount]) +
+      convertDecimalToBinary8(image[++rgbCount]) +
+      convertDecimalToBinary8(image[++rgbCount]) +
+      convertDecimalToBinary8(image[++rgbCount]) +
+      convertDecimalToBinary8(image[++rgbCount]);
+
+    ++rgbCount;
+
+    console.log(pt, "<");
+
+    const encryptedValue = DES();
+
+    console.log(encryptedValue);
+
+    for (let j = 0; j < 8; j++) {
+      // console.log(encryptedValue.slice(j, j + 8));
+      encryptedImage.push(
+        convertBinaryToDecimal(encryptedValue.slice(j * 8, j * 8 + 8))
+      );
+    }
+  }
+
+  console.log(encryptedImage);
+  // ProgresBas section
+  // var elem = document.getElementById("myBar");
+  // var countBar = document.getElementById("countBar");
+  // elem.style.width = count + "%";
+  // countBar.innerHTML = count + "%";
+  // // console.clear();
+  // // console.log(`${count} %`);
+
+  // howManyTime -= loopHowMany / 100;
+  // if (howManyTime > 0) {
+  //   setTimeout(() => loop(howManyTime, count + 1), 0);
+  // }
+};
+
+const encryption = (pixels) => {
+  for (let i = 0; i < pixels.data.length; i += 4) {
+    image.push(pixels.data[i]);
+    image.push(pixels.data[i + 1]);
+    image.push(pixels.data[i + 2]);
+  }
+
+  console.log(image);
+
   let key = "1010101010111011000010010001100000100111001101101100110011011101";
-  pt = "1010101111001101111001101010101111001101000100110010010100110110";
-  const apt =
-    "1010101111001101111001101010101111001101000100110010010100110110";
+  // pt = "1010101111001101111001101010101111001101000100110010010100110110";
+  // const apt =
+  //   "1010101111001101111001101010101111001101000100110010010100110110";
   generateKeys(key);
 
-  const t0 = performance.now();
-  const howMany = 20000;
-  for (let i = 0; i < howMany; i++) {
-    let ct = DES();
+  console.log(convertBinaryToDecimal("11001110"));
 
-    // console.log(ct);
-
-    if (i % (howMany / 1000) === 0) {
-      var elem = document.getElementById("myBar");
-      const width = i / (howMany / 100);
-      elem.style.width = width + "%";
-      elem.innerHTML = width + "%";
-      // console.clear();
-      console.log(`${i / (howMany / 100)} %`);
-    }
-
-    let reverseKeys = [];
-    for (let i = 0; i < 16; i++) {
-      reverseKeys[i] = roundKeys[15 - i];
-    }
-
-    roundKeys = reverseKeys;
-
-    pt = ct;
+  let reverseKeys = [];
+  for (let i = 0; i < 16; i++) {
+    reverseKeys[i] = roundKeys[15 - i];
   }
+
+  roundKeys = reverseKeys;
+
+  const t0 = performance.now();
+  const howMany = image.length;
+
+  loopHowMany = howMany;
+  loop(howMany, 0);
+  rgbCount = 0;
+  // console.log(encryptedImage);
+  return encryptedImage;
+
+  // console.log(pt, image);
+
+  // for (let i = 0; i < howMany; i++) {
+  //   let ct = DES();
+
+  //   // console.log(ct);
+
+  //   if (i % (howMany / 1000) === 0) {
+  //     var elem = document.getElementById("myBar");
+  //     const width = i / (howMany / 100);
+  //     elem.style.width = width + "%";
+  //     elem.innerHTML = width + "%";
+  //     // console.clear();
+  //     console.log(`${i / (howMany / 100)} %`);
+  //   }
+
+  //   let reverseKeys = [];
+  //   for (let i = 0; i < 16; i++) {
+  //     reverseKeys[i] = roundKeys[15 - i];
+  //   }
+
+  //   roundKeys = reverseKeys;
+
+  //   // pt = ct;
+  // }
 
   const t1 = performance.now();
   // const decrypted = DES();
