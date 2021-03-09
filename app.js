@@ -8,8 +8,14 @@ let canvas;
 
 const saveButton = document.querySelector("#saveButton");
 saveButton.addEventListener("click", () => save());
+
 const encryptionButton = document.querySelector("#encryptionButton");
-encryptionButton.addEventListener("click", () => encryption());
+encryptionButton.addEventListener("click", () =>
+  encryption(pictureDate.pixels, canvas)
+);
+
+const myCanvas = document.querySelector("#myCanvas");
+myCanvas.addEventListener("render", (e) => encryptionPicture(e));
 
 window.addEventListener("load", function () {
   document
@@ -23,7 +29,7 @@ window.addEventListener("load", function () {
         img.src = URL.createObjectURL(this.files[0]);
         pictureDate.file = this.files[0];
       }
-      setTimeout(() => setNewPictureInCanvas(), 1);
+      setTimeout(() => setNewPictureInCanvas(), 100);
     });
 });
 
@@ -32,6 +38,23 @@ const Canvas = function (canvasEl, width, height) {
   this.el.width = width;
   this.el.height = height;
   this.ctx = canvasEl.getContext("2d");
+};
+
+const encryptionPicture = (e) => {
+  // TODO: add e.pictureValue
+  const encryptionPixels = e.detail;
+
+  for (let i = 0, j = 0; i < pictureDate.pixels.data.length; i += 4, j += 3) {
+    pictureDate.pixels.data[i] = encryptionPixels[j];
+    pictureDate.pixels.data[i + 1] = encryptionPixels[j + 1];
+    pictureDate.pixels.data[i + 2] = encryptionPixels[j + 2];
+    pictureDate.pixels.data[i + 3] = 255;
+  }
+
+  // console.log(pictureDate.pixels);
+  canvas.ctx.putImageData(pictureDate.pixels, 0, 0);
+
+  // console.log(canvas.ctx.getImageData(0, 0, canvas.el.width, canvas.el.height));
 };
 
 function setNewPictureInCanvas() {
@@ -73,6 +96,7 @@ function setNewPictureInCanvas() {
     }
     const number = convertNumberToString(100);
     convertStringToNumber(number);
+    console.log(pictureDate.pixels);
     canvas.ctx.putImageData(pictureDate.pixels, 0, 0);
   };
 }
