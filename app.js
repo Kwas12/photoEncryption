@@ -54,7 +54,7 @@ const encryptionPicture = (e) => {
   // console.log(pictureDate.pixels);
   canvas.ctx.putImageData(pictureDate.pixels, 0, 0);
 
-  console.log(canvas.ctx.getImageData(0, 0, canvas.el.width, canvas.el.height));
+  // console.log(canvas.ctx.getImageData(0, 0, canvas.el.width, canvas.el.height));
 };
 
 function setNewPictureInCanvas() {

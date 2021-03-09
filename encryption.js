@@ -1,9 +1,14 @@
-let roundKeys = [];
+let roundKeysDes = [];
+let roundKeysSDes = [];
+
 let pt = "";
 let loopHowMany = 0;
 let image = [];
 let rgbCount = 0;
 let encryptedImage = [];
+let t0 = 0;
+let t1 = 0;
+
 const event = new CustomEvent("render", { detail: encryptedImage });
 event.initEvent("render", true, true);
 
@@ -120,7 +125,7 @@ const generateKeys = (key) => {
     for (let i = 0; i < 48; i++) {
       roundKey += combinedKey[pc2[i] - 1];
     }
-    roundKeys[i] = roundKey;
+    roundKeysDes[i] = roundKey;
   }
 };
 
@@ -159,7 +164,7 @@ const DES = () => {
   ];
 
   // prettier-ignore
-  const substition_boxes = [
+  const sBlocks = [
     [
       [
         14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7,
@@ -297,7 +302,7 @@ const DES = () => {
       rightExpanded += right[expansionTable[j] - 1];
     }
 
-    let xored = xor(roundKeys[i], rightExpanded);
+    let xored = xor(roundKeysDes[i], rightExpanded);
     let res = "";
 
     for (let j = 0; j < 8; j++) {
@@ -311,7 +316,7 @@ const DES = () => {
         xored.slice(j * 6 + 4, j * 6 + 5);
       const col = convertBinaryToDecimal(col1);
 
-      const val = substition_boxes[j][row][col];
+      const val = sBlocks[j][row][col];
 
       res += convertDecimalToBinary(val);
     }
@@ -342,8 +347,8 @@ const DES = () => {
   return cipherText;
 };
 
-async function loop(howManyTime, counter) {
-  for (let i = 0; i < howManyTime / 1024; i++) {
+const loop = (howManyTime, counter, howManyPerLoop) => {
+  for (let i = 0; i < howManyTime / howManyPerLoop; i++) {
     pt =
       convertDecimalToBinary8(image[rgbCount]) +
       convertDecimalToBinary8(image[++rgbCount]) +
@@ -366,27 +371,21 @@ async function loop(howManyTime, counter) {
   }
   var elem = document.getElementById("myBar");
   var countBar = document.getElementById("countBar");
-  elem.style.width = ((128 - counter) / 128) * 100 + "%";
-  countBar.innerHTML = ((128 - counter) / 128) * 100 + "%";
+  elem.style.width =
+    ((howManyPerLoop / 8 - counter) / (howManyPerLoop / 8)) * 100 + "%";
+  countBar.innerHTML =
+    ((howManyPerLoop / 8 - counter) / (howManyPerLoop / 8)) * 100 + "%";
 
   if (counter > 0) {
-    setTimeout(() => loop(howManyTime, counter - 1), 10);
+    setTimeout(() => loop(howManyTime, counter - 1, howManyPerLoop), 0);
     const myCanvas = document.querySelector("#myCanvas");
     myCanvas.dispatchEvent(event);
   } else {
     encryptedImage.length = 0;
+    t1 = performance.now();
+    alert(`Ukonczono z czasem: ${(t1 - t0).toFixed(2)} ms`);
   }
-
-  // console.log(encryptedImage);
-
-  // console.clear();
-  // console.log(`${count} %`);
-
-  // howManyTime -= loopHowMany / 100;
-  // if (howManyTime > 0) {
-  //   setTimeout(() => loop(howManyTime, count + 1), 0);
-  // }
-}
+};
 
 const encryption = (pixels) => {
   clearViable();
@@ -396,6 +395,12 @@ const encryption = (pixels) => {
     image.push(pixels.data[i + 2]);
   }
 
+  //key generate sDes
+  // let key = "0010010111";
+  // sDesKayGenerator(key);
+
+  // sDesProgram();
+
   let key = "1010101010111011000010010001100000100111001101101100110011011101";
 
   generateKeys(key);
@@ -404,31 +409,106 @@ const encryption = (pixels) => {
   if (Number(decodeCheckBox.value)) {
     let reverseKeys = [];
     for (let i = 0; i < 16; i++) {
-      reverseKeys[i] = roundKeys[15 - i];
+      reverseKeys[i] = roundKeysDes[15 - i];
     }
 
-    roundKeys = reverseKeys;
+    roundKeysDes = reverseKeys;
   }
 
-  const t0 = performance.now();
   const howMany = image.length;
-  loop(howMany, 128);
-  // const myCanvas = document.querySelector("#myCanvas");
-  // myCanvas.dispatchEvent(event);
-  // rgbCount = 0;
-  const t1 = performance.now();
+  let counter = 0;
+  console.log(howMany);
+  if (howMany > 1000000) {
+    counter = 512;
+  } else {
+    counter = 128;
+  }
 
-  console.log(`hura time : ${t1 - t0}ms`);
+  const howManyPerLoop = counter * 8;
 
-  // return encryptedImage;
+  t0 = performance.now();
+  loop(howMany, counter, howManyPerLoop);
 };
 
 const clearViable = () => {
-  roundKeys = [];
+  roundKeysDes = [];
   pt = "";
   loopHowMany = 0;
   image = [];
   rgbCount = 0;
+};
+
+const sDesProgram = () => {
+  pt = "10100101";
+
+  const initialPermutation = [2, 6, 3, 1, 4, 8, 5, 7];
+  const inverseInitialPermutation = [4, 1, 3, 5, 7, 2, 8, 6];
+  const E = [4, 1, 2, 3, 2, 3, 4, 1];
+
+  const S = [
+    [
+      [1, 0, 3, 2],
+      [3, 2, 1, 0],
+      [0, 2, 1, 3],
+      [3, 1, 3, 2],
+    ],
+    [
+      [0, 1, 2, 3],
+      [2, 0, 1, 3],
+      [3, 0, 1, 0],
+      [2, 1, 0, 3],
+    ],
+  ];
+
+  let perm = "";
+
+  for (let i = 0; i < 8; i++) {
+    perm += pt[initialPermutation[i] - 1];
+  }
+
+  let leftPerm = perm.slice(0, 4);
+  let rightPerm = perm.slice(4, 8);
+
+  //sdesFunction
+  perm = "";
+  for (let i = 0; i < 8; i++) {
+    perm += rightPerm[E[i] - 1];
+  }
+  perm = xor(perm, roundKeysSDes[0]);
+
+  let leftS0 = perm.slice(0, 4);
+  let rightS1 = perm.slice(4, 8);
+
+  console.log(leftS0, rightS1);
+};
+
+const sDesKayGenerator = (key) => {
+  const p10Permutation = [3, 5, 2, 7, 4, 10, 1, 9, 8, 6];
+  const p8Permutation = [6, 3, 7, 4, 8, 5, 10, 9];
+
+  for (let i = 0; i < 2; i++) {
+    let permutation10Key = "";
+    for (let j = 0; j < 10; j++) {
+      permutation10Key += key[p10Permutation[j] - 1];
+    }
+
+    let leftKey = permutation10Key.slice(1, 5) + permutation10Key.slice(0, 1);
+    let rightKey = permutation10Key.slice(6, 10) + permutation10Key.slice(5, 6);
+    permutation10Key = leftKey + rightKey;
+
+    if (i === 1) {
+      leftKey = permutation10Key.slice(2, 5) + permutation10Key.slice(0, 2);
+      rightKey = permutation10Key.slice(7, 10) + permutation10Key.slice(5, 7);
+      permutation10Key = leftKey + rightKey;
+    }
+
+    let permutation8Key = "";
+    for (let j = 0; j < 8; j++) {
+      permutation8Key += permutation10Key[p8Permutation[j] - 1];
+    }
+
+    roundKeysSDes.push(permutation8Key);
+  }
 };
 
 export default encryption;
