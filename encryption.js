@@ -345,23 +345,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
   var myWorker4 = new Worker("worker.js");
 
   myWorker.onmessage = function (e) {
-    let encryptedValue = e.data[0];
-    encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
-    // let j = 0;
-    // for (let i = e.data[1]; i <= e.data[2]; i++) {
-    //   encryptedImage[i] = encryptedValue[j];
-    //   j++;
-    // }
-
-    const myCanvas = document.querySelector("#myCanvas");
-    myCanvas.dispatchEvent(event);
-    console.log("1");
-
-    var elem = document.getElementById("myBar");
-    var countBar = document.getElementById("countBar");
-    elem.style.width = (rgbCount1 / (counter / 4)) * 100 + "%";
-    countBar.innerHTML = (rgbCount1 / (counter / 4)) * 100 + "%";
-
     if (rgbCount1 - 1 < counter / 4) {
       myWorker.postMessage([
         image.slice(
@@ -376,20 +359,25 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       ]);
       ++rgbCount1;
     }
-  };
-  myWorker2.onmessage = function (e) {
+
     let encryptedValue = e.data[0];
-    encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
-    // let j = 0;
-    // for (let i = e.data[1]; i <= e.data[2]; i++) {
-    //   encryptedImage[i] = encryptedValue[j];
-    //   j++;
-    // }
+    // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
+    let j = 0;
+    for (let i = e.data[1]; i <= e.data[2]; i++) {
+      encryptedImage[i] = encryptedValue[j];
+      j++;
+    }
 
     const myCanvas = document.querySelector("#myCanvas");
     myCanvas.dispatchEvent(event);
-    console.log("2");
+    console.log("1");
 
+    var elem = document.getElementById("myBar");
+    var countBar = document.getElementById("countBar");
+    elem.style.width = (rgbCount1 / (counter / 4)) * 100 + "%";
+    countBar.innerHTML = (rgbCount1 / (counter / 4)) * 100 + "%";
+  };
+  myWorker2.onmessage = function (e) {
     if (rgbCount2 - 1 < (counter / 4) * 2) {
       // prettier-ignore
       myWorker2.postMessage([
@@ -405,20 +393,20 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       ]);
       ++rgbCount2;
     }
-  };
-  myWorker3.onmessage = function (e) {
+
     let encryptedValue = e.data[0];
-    encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
-    // let j = 0;
-    // for (let i = e.data[1]; i <= e.data[2]; i++) {
-    //   encryptedImage[i] = encryptedValue[j];
-    //   j++;
-    // }
+    // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
+    let j = 0;
+    for (let i = e.data[1]; i <= e.data[2]; i++) {
+      encryptedImage[i] = encryptedValue[j];
+      j++;
+    }
 
     const myCanvas = document.querySelector("#myCanvas");
     myCanvas.dispatchEvent(event);
-    console.log("3");
-
+    console.log("2");
+  };
+  myWorker3.onmessage = function (e) {
     if (rgbCount3 - 1 < (counter / 4) * 3) {
       // prettier-ignore
       myWorker3.postMessage([
@@ -434,20 +422,19 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       ]);
       ++rgbCount3;
     }
-  };
-  myWorker4.onmessage = function (e) {
     let encryptedValue = e.data[0];
-    encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
-    // let j = 0;
-    // for (let i = e.data[1]; i <= e.data[2]; i++) {
-    //   encryptedImage[i] = encryptedValue[j];
-    //   j++;
-    // }
+    // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
+    let j = 0;
+    for (let i = e.data[1]; i <= e.data[2]; i++) {
+      encryptedImage[i] = encryptedValue[j];
+      j++;
+    }
 
     const myCanvas = document.querySelector("#myCanvas");
     myCanvas.dispatchEvent(event);
-    console.log("4");
-
+    console.log("3");
+  };
+  myWorker4.onmessage = function (e) {
     if (rgbCount4 - 1 < counter) {
       // prettier-ignore
       myWorker4.postMessage([
@@ -466,6 +453,18 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       t1 = performance.now();
       alert(`Ukonczono z czasem: ${(t1 - t0).toFixed(2)} ms`);
     }
+
+    let encryptedValue = e.data[0];
+    // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
+    let j = 0;
+    for (let i = e.data[1]; i <= e.data[2]; i++) {
+      encryptedImage[i] = encryptedValue[j];
+      j++;
+    }
+
+    const myCanvas = document.querySelector("#myCanvas");
+    myCanvas.dispatchEvent(event);
+    console.log("4");
   };
 
   // prettier-ignore
@@ -631,7 +630,7 @@ const encryption = (pixels) => {
     console.log(howMany);
 
     if (howMany > 40000000) {
-      counter = 512;
+      counter = 32;
     } else {
       counter = 128;
     }
