@@ -352,6 +352,6 @@ onmessage = function (e) {
       );
     }
   }
-  postMessage(encryptedImage);
-  console.log(rgbCount);
+  postMessage([encryptedImage, e.data[4], e.data[5]]);
+  // console.log(rgbCount);
 };
