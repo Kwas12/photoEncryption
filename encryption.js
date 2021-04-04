@@ -343,7 +343,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
   var myWorker2 = new Worker("worker.js");
   var myWorker3 = new Worker("worker.js");
   var myWorker4 = new Worker("worker.js");
-
   myWorker.onmessage = function (e) {
     if (rgbCount1 - 1 < counter / 4) {
       myWorker.postMessage([
@@ -359,7 +358,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       ]);
       ++rgbCount1;
     }
-
     let encryptedValue = e.data[0];
     // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
     let j = 0;
@@ -367,15 +365,13 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       encryptedImage[i] = encryptedValue[j];
       j++;
     }
-
     const myCanvas = document.querySelector("#myCanvas");
     myCanvas.dispatchEvent(event);
     console.log("1");
-
     var elem = document.getElementById("myBar");
     var countBar = document.getElementById("countBar");
-    elem.style.width = (rgbCount1 / (counter / 4)) * 100 + "%";
-    countBar.innerHTML = (rgbCount1 / (counter / 4)) * 100 + "%";
+    elem.style.width = ((rgbCount1 - 1) / (counter / 4)) * 100 + "%";
+    countBar.innerHTML = ((rgbCount1 - 1) / (counter / 4)) * 100 + "%";
   };
   myWorker2.onmessage = function (e) {
     if (rgbCount2 - 1 < (counter / 4) * 2) {
@@ -393,7 +389,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       ]);
       ++rgbCount2;
     }
-
     let encryptedValue = e.data[0];
     // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
     let j = 0;
@@ -401,7 +396,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       encryptedImage[i] = encryptedValue[j];
       j++;
     }
-
     const myCanvas = document.querySelector("#myCanvas");
     myCanvas.dispatchEvent(event);
     console.log("2");
@@ -429,7 +423,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       encryptedImage[i] = encryptedValue[j];
       j++;
     }
-
     const myCanvas = document.querySelector("#myCanvas");
     myCanvas.dispatchEvent(event);
     console.log("3");
@@ -453,7 +446,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       t1 = performance.now();
       alert(`Ukonczono z czasem: ${(t1 - t0).toFixed(2)} ms`);
     }
-
     let encryptedValue = e.data[0];
     // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
     let j = 0;
@@ -461,12 +453,10 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
       encryptedImage[i] = encryptedValue[j];
       j++;
     }
-
     const myCanvas = document.querySelector("#myCanvas");
     myCanvas.dispatchEvent(event);
     console.log("4");
   };
-
   // prettier-ignore
   myWorker.postMessage([
     image.slice(
@@ -480,7 +470,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
         ((rgbCount1+1) * 8 * howManyTime) / howManyPerLoop -1
   ]);
   ++rgbCount1;
-
   // prettier-ignore
   myWorker2.postMessage([
     image.slice(
@@ -494,7 +483,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
     ((rgbCount2+1) * 8 * howManyTime) / howManyPerLoop -1
   ]);
   ++rgbCount2;
-
   // prettier-ignore
   myWorker3.postMessage([
     image.slice(
@@ -508,7 +496,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
     ((rgbCount3+1) * 8 * howManyTime) / howManyPerLoop -1
   ]);
   ++rgbCount3;
-
   myWorker4.postMessage([
     image.slice(
       (rgbCount4 * 8 * howManyTime) / howManyPerLoop,
@@ -521,7 +508,6 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
     ((rgbCount4 + 1) * 8 * howManyTime) / howManyPerLoop - 1,
   ]);
   ++rgbCount4;
-
   // for (let i = 0; i < howManyTime / howManyPerLoop; i++) {
   //   pt =
   //     convertDecimalToBinary(image[rgbCount], 8) +
@@ -532,23 +518,19 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
   //     convertDecimalToBinary(image[++rgbCount], 8) +
   //     convertDecimalToBinary(image[++rgbCount], 8) +
   //     convertDecimalToBinary(image[++rgbCount], 8);
-
   //   ++rgbCount;
   //   const encryptedValue = DES();
-
   //   for (let j = 0; j < 8; j++) {
   //     encryptedImage.push(
   //       convertBinaryToDecimal(encryptedValue.slice(j * 8, j * 8 + 8))
   //     );
   //   }
   // }
-
   // var elem = document.getElementById("myBar");
   // var countBar = document.getElementById("countBar");
   // elem.style.width = (howManyTime / encryptedImage.length) * 100 + "%";
   // countBar.innerHTML =
   //   ((howManyPerLoop / 8 - counter) / (howManyPerLoop / 8)) * 100 + "%";
-
   // if (counter > 0) {
   //   setTimeout(() => loopDES(howManyTime, counter - 1, howManyPerLoop), 0);
   //   const myCanvas = document.querySelector("#myCanvas");
@@ -617,7 +599,6 @@ const encryption = (pixels) => {
       "1010101010111011000010010001100000100111001101101100110011011101";
     generateKeys(key);
 
-    encryptedImage.length = howMany;
     const decodeCheckBox = document.querySelector("#encryptionSelector");
     if (Number(decodeCheckBox.value)) {
       let reverseKeys = [];
