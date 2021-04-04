@@ -42,6 +42,7 @@ const Canvas = function (canvasEl, width, height) {
 
 const encryptionPicture = (e) => {
   // TODO: add e.pictureValue
+
   const encryptionPixels = e.detail;
 
   for (let i = 0, j = 0; i < pictureDate.pixels.data.length; i += 4, j += 3) {

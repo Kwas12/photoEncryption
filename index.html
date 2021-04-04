@@ -9,14 +9,17 @@
 </head>
 <body>
   <div>
-    <input type='file' />
-    <button id="saveButton"> Zapisz</button>
-    <button id="encryptionButton"> Szyfruj</button>
+    <input type='file'/>
     <select name="Encryption" id="encryptionSelector">
-      <option value="0">Encryption</option>
-      <option value="1">Decryption</option>
-      
+      <option value="0">Kodowanie</option>
+      <option value="1">Dekodowanie</option>
     </select>
+    <select name="EncryptionAlgorytm" id="encryptionSelectorAlgorytm">
+      <option value="0">DES</option>
+      <option value="1">SDES</option>
+    </select>
+    <button id="encryptionButton"> Uruchom Algorytm</button>
+    <button id="saveButton"> Zapisz plik</button>
     <br><img id="myImg" class="image" src="" alt="">
     <div id="myProgress">
       <div id="myBar"></div>
