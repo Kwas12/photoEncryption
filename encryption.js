@@ -461,51 +461,51 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
   myWorker.postMessage([
     image.slice(
       (rgbCount1 * 8 * howManyTime) / howManyPerLoop,
-      ((rgbCount1+1) * 8 * howManyTime) / howManyPerLoop -1
+      ((rgbCount1+1) * 8 * howManyTime) / howManyPerLoop
     ),
     howManyTime,
     howManyPerLoop,
     roundKeysDes,
     (rgbCount1 * 8 * howManyTime) / howManyPerLoop,
-        ((rgbCount1+1) * 8 * howManyTime) / howManyPerLoop -1
+        ((rgbCount1+1) * 8 * howManyTime) / howManyPerLoop
   ]);
   ++rgbCount1;
   // prettier-ignore
   myWorker2.postMessage([
     image.slice(
       (rgbCount2 * 8 * howManyTime) / howManyPerLoop,
-      ((rgbCount2+1) * 8 * howManyTime) / howManyPerLoop -1
+      ((rgbCount2+1) * 8 * howManyTime) / howManyPerLoop
     ),
     howManyTime,
     howManyPerLoop,
     roundKeysDes,
     (rgbCount2 * 8 * howManyTime) / howManyPerLoop,
-    ((rgbCount2+1) * 8 * howManyTime) / howManyPerLoop -1
+    ((rgbCount2+1) * 8 * howManyTime) / howManyPerLoop
   ]);
   ++rgbCount2;
   // prettier-ignore
   myWorker3.postMessage([
     image.slice(
       (rgbCount3 * 8 * howManyTime) / howManyPerLoop,
-      ((rgbCount3+1) * 8 * howManyTime) / howManyPerLoop -1
+      ((rgbCount3+1) * 8 * howManyTime) / howManyPerLoop
     ),
     howManyTime,
     howManyPerLoop,
     roundKeysDes,
     (rgbCount3 * 8 * howManyTime) / howManyPerLoop,
-    ((rgbCount3+1) * 8 * howManyTime) / howManyPerLoop -1
+    ((rgbCount3+1) * 8 * howManyTime) / howManyPerLoop
   ]);
   ++rgbCount3;
   myWorker4.postMessage([
     image.slice(
       (rgbCount4 * 8 * howManyTime) / howManyPerLoop,
-      ((rgbCount4 + 1) * 8 * howManyTime) / howManyPerLoop - 1
+      ((rgbCount4 + 1) * 8 * howManyTime) / howManyPerLoop
     ),
     howManyTime,
     howManyPerLoop,
     roundKeysDes,
     (rgbCount4 * 8 * howManyTime) / howManyPerLoop,
-    ((rgbCount4 + 1) * 8 * howManyTime) / howManyPerLoop - 1,
+    ((rgbCount4 + 1) * 8 * howManyTime) / howManyPerLoop,
   ]);
   ++rgbCount4;
   // for (let i = 0; i < howManyTime / howManyPerLoop; i++) {
