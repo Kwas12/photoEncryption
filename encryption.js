@@ -392,7 +392,7 @@ const loopDES = (howManyTime, counter, howManyPerLoop) => {
             }
             return 0;
           })
-          .reduce((prev, current) => prev + current) === 15
+          .reduce((prev, current) => prev + current) === numberCores
       ) {
         t1 = performance.now();
         alert(`Ukonczono z czasem: ${(t1 - t0).toFixed(2)} ms`);
