@@ -339,6 +339,7 @@ const DES = () => {
 };
 
 const loopDES = (howManyTime, counter, howManyPerLoop) => {
+<<<<<<< HEAD
   rgbCount = 0;
   const numberCores = 15;
   var workers = [];
