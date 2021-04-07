@@ -523,7 +523,7 @@ const encryption = (pixels) => {
     console.log(howMany);
 
     for (let i = 0; i < 257; i++) {
-      if (howMany % i === 0) {
+      if (howMany % i === 0 && (howMany / 3 / i) % 64 === 0) {
         counter = i;
       }
     }
