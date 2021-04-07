@@ -340,7 +340,7 @@ const DES = () => {
 
 const loopDES = (howManyTime, counter, howManyPerLoop) => {
   rgbCount = 0;
-  const numberCores = 15;
+  const numberCores = window.navigator.hardwareConcurrency -1;
   var workers = [];
 
   for (let cores = 0; cores < numberCores; cores++) {
