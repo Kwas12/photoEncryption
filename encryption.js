@@ -339,175 +339,87 @@ const DES = () => {
 };
 
 const loopDES = (howManyTime, counter, howManyPerLoop) => {
-  var myWorker = new Worker("worker.js");
-  var myWorker2 = new Worker("worker.js");
-  var myWorker3 = new Worker("worker.js");
-  var myWorker4 = new Worker("worker.js");
-  myWorker.onmessage = function (e) {
-    if (rgbCount1 - 1 < counter / 4) {
-      myWorker.postMessage([
-        image.slice(
-          (rgbCount1 * 8 * howManyTime) / howManyPerLoop,
-          ((rgbCount1 + 1) * 8 * howManyTime) / howManyPerLoop
-        ),
-        howManyTime,
-        howManyPerLoop,
-        roundKeysDes,
-        (rgbCount1 * 8 * howManyTime) / howManyPerLoop,
-        ((rgbCount1 + 1) * 8 * howManyTime) / howManyPerLoop,
-      ]);
-      ++rgbCount1;
-    }
-    let encryptedValue = e.data[0];
-    // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
-    let j = 0;
-    for (let i = e.data[1]; i <= e.data[2]; i++) {
-      encryptedImage[i] = encryptedValue[j];
-      j++;
-    }
-    const myCanvas = document.querySelector("#myCanvas");
-    myCanvas.dispatchEvent(event);
-    console.log("1");
-    var elem = document.getElementById("myBar");
-    var countBar = document.getElementById("countBar");
-    elem.style.width = ((rgbCount1 - 1) / (counter / 4)) * 100 + "%";
-    countBar.innerHTML = ((rgbCount1 - 1) / (counter / 4)) * 100 + "%";
-  };
-  myWorker2.onmessage = function (e) {
-    if (rgbCount2 - 1 < (counter / 4) * 2) {
-      // prettier-ignore
-      myWorker2.postMessage([
-        image.slice(
-          (rgbCount2 * 8 * howManyTime) / howManyPerLoop,
-          ((rgbCount2+1) * 8 * howManyTime) / howManyPerLoop
-        ),
-        howManyTime,
-        howManyPerLoop,
-        roundKeysDes,
-        (rgbCount2 * 8 * howManyTime) / howManyPerLoop,
-        ((rgbCount2+1) * 8 * howManyTime) / howManyPerLoop
-      ]);
-      ++rgbCount2;
-    }
-    let encryptedValue = e.data[0];
-    // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
-    let j = 0;
-    for (let i = e.data[1]; i <= e.data[2]; i++) {
-      encryptedImage[i] = encryptedValue[j];
-      j++;
-    }
-    const myCanvas = document.querySelector("#myCanvas");
-    myCanvas.dispatchEvent(event);
-    console.log("2");
-  };
-  myWorker3.onmessage = function (e) {
-    if (rgbCount3 - 1 < (counter / 4) * 3) {
-      // prettier-ignore
-      myWorker3.postMessage([
-        image.slice(
-          (rgbCount3 * 8 * howManyTime) / howManyPerLoop,
-          ((rgbCount3+1) * 8 * howManyTime) / howManyPerLoop
-        ),
-        howManyTime,
-        howManyPerLoop,
-        roundKeysDes,
-        (rgbCount3 * 8 * howManyTime) / howManyPerLoop,
-        ((rgbCount3+1) * 8 * howManyTime) / howManyPerLoop
-      ]);
-      ++rgbCount3;
-    }
-    let encryptedValue = e.data[0];
-    // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
-    let j = 0;
-    for (let i = e.data[1]; i <= e.data[2]; i++) {
-      encryptedImage[i] = encryptedValue[j];
-      j++;
-    }
-    const myCanvas = document.querySelector("#myCanvas");
-    myCanvas.dispatchEvent(event);
-    console.log("3");
-  };
-  myWorker4.onmessage = function (e) {
-    if (rgbCount4 - 1 < counter) {
-      // prettier-ignore
-      myWorker4.postMessage([
-        image.slice(
-          (rgbCount4 * 8 * howManyTime) / howManyPerLoop,
-          ((rgbCount4+1) * 8 * howManyTime) / howManyPerLoop
-        ),
-        howManyTime,
-        howManyPerLoop,
-        roundKeysDes,
-        (rgbCount4 * 8 * howManyTime) / howManyPerLoop,
-        ((rgbCount4+1) * 8 * howManyTime) / howManyPerLoop
-      ]);
-      ++rgbCount4;
-    } else {
-      t1 = performance.now();
-      alert(`Ukonczono z czasem: ${(t1 - t0).toFixed(2)} ms`);
-    }
-    let encryptedValue = e.data[0];
-    // encryptedImage.splice(e.data[1], e.data[2] - e.data[1], ...encryptedValue);
-    let j = 0;
-    for (let i = e.data[1]; i <= e.data[2]; i++) {
-      encryptedImage[i] = encryptedValue[j];
-      j++;
-    }
-    const myCanvas = document.querySelector("#myCanvas");
-    myCanvas.dispatchEvent(event);
-    console.log("4");
-  };
-  // prettier-ignore
-  myWorker.postMessage([
-    image.slice(
-      (rgbCount1 * 8 * howManyTime) / howManyPerLoop,
-      ((rgbCount1+1) * 8 * howManyTime) / howManyPerLoop -1
-    ),
-    howManyTime,
-    howManyPerLoop,
-    roundKeysDes,
-    (rgbCount1 * 8 * howManyTime) / howManyPerLoop,
-        ((rgbCount1+1) * 8 * howManyTime) / howManyPerLoop -1
-  ]);
-  ++rgbCount1;
-  // prettier-ignore
-  myWorker2.postMessage([
-    image.slice(
-      (rgbCount2 * 8 * howManyTime) / howManyPerLoop,
-      ((rgbCount2+1) * 8 * howManyTime) / howManyPerLoop -1
-    ),
-    howManyTime,
-    howManyPerLoop,
-    roundKeysDes,
-    (rgbCount2 * 8 * howManyTime) / howManyPerLoop,
-    ((rgbCount2+1) * 8 * howManyTime) / howManyPerLoop -1
-  ]);
-  ++rgbCount2;
-  // prettier-ignore
-  myWorker3.postMessage([
-    image.slice(
-      (rgbCount3 * 8 * howManyTime) / howManyPerLoop,
-      ((rgbCount3+1) * 8 * howManyTime) / howManyPerLoop -1
-    ),
-    howManyTime,
-    howManyPerLoop,
-    roundKeysDes,
-    (rgbCount3 * 8 * howManyTime) / howManyPerLoop,
-    ((rgbCount3+1) * 8 * howManyTime) / howManyPerLoop -1
-  ]);
-  ++rgbCount3;
-  myWorker4.postMessage([
-    image.slice(
-      (rgbCount4 * 8 * howManyTime) / howManyPerLoop,
-      ((rgbCount4 + 1) * 8 * howManyTime) / howManyPerLoop - 1
-    ),
-    howManyTime,
-    howManyPerLoop,
-    roundKeysDes,
-    (rgbCount4 * 8 * howManyTime) / howManyPerLoop,
-    ((rgbCount4 + 1) * 8 * howManyTime) / howManyPerLoop - 1,
-  ]);
-  ++rgbCount4;
+  rgbCount = 0;
+  const numberCores = 15;
+  var workers = [];
+
+  for (let cores = 0; cores < numberCores; cores++) {
+    workers.push({ workerFlag: false, worker: new Worker("worker.js") });
+  }
+
+  workers.forEach((worker, index) => {
+    worker.worker.onmessage = function (e) {
+      console.log(
+        index,
+        (rgbCount * 8 * howManyTime) / howManyPerLoop,
+        ((rgbCount + 1) * 8 * howManyTime) / howManyPerLoop
+      );
+      if (rgbCount < counter) {
+        worker.worker.postMessage([
+          image.slice(
+            (rgbCount * 8 * howManyTime) / howManyPerLoop,
+            ((rgbCount + 1) * 8 * howManyTime) / howManyPerLoop
+          ),
+          howManyTime,
+          howManyPerLoop,
+          roundKeysDes,
+          (rgbCount * 8 * howManyTime) / howManyPerLoop,
+          ((rgbCount + 1) * 8 * howManyTime) / howManyPerLoop - 1,
+        ]);
+        ++rgbCount;
+      } else {
+        worker.workerFlag = true;
+      }
+
+      let encryptedValue = e.data[0];
+      let j = 0;
+      for (let i = e.data[1]; i <= e.data[2]; i++) {
+        encryptedImage[i] = encryptedValue[j];
+        j++;
+      }
+      const myCanvas = document.querySelector("#myCanvas");
+      myCanvas.dispatchEvent(event);
+      var elem = document.getElementById("myBar");
+      var countBar = document.getElementById("countBar");
+      elem.style.width = (rgbCount / counter) * 100 + "%";
+      countBar.innerHTML = (rgbCount / counter) * 100 + "%";
+
+      if (
+        workers
+          .map((worker) => {
+            if (worker.workerFlag === true) {
+              return 1;
+            }
+            return 0;
+          })
+          .reduce((prev, current) => prev + current) === 15
+      ) {
+        t1 = performance.now();
+        alert(`Ukonczono z czasem: ${(t1 - t0).toFixed(2)} ms`);
+      }
+    };
+  });
+
+  workers.forEach((worker, index) => {
+    worker.worker.postMessage([
+      image.slice(
+        (rgbCount * 8 * howManyTime) / howManyPerLoop,
+        ((rgbCount + 1) * 8 * howManyTime) / howManyPerLoop
+      ),
+      howManyTime,
+      howManyPerLoop,
+      roundKeysDes,
+      (rgbCount * 8 * howManyTime) / howManyPerLoop,
+      ((rgbCount + 1) * 8 * howManyTime) / howManyPerLoop - 1,
+    ]);
+    console.log(
+      (rgbCount * 8 * howManyTime) / howManyPerLoop,
+      ((rgbCount + 1) * 8 * howManyTime) / howManyPerLoop - 1
+    );
+    ++rgbCount;
+  });
+
+  //------------------------------------------------------------------------------------------- v1
   // for (let i = 0; i < howManyTime / howManyPerLoop; i++) {
   //   pt =
   //     convertDecimalToBinary(image[rgbCount], 8) +
@@ -610,11 +522,12 @@ const encryption = (pixels) => {
 
     console.log(howMany);
 
-    if (howMany > 40000000) {
-      counter = 32;
-    } else {
-      counter = 128;
+    for (let i = 0; i < 257; i++) {
+      if (howMany % i === 0) {
+        counter = i;
+      }
     }
+    console.log(counter);
 
     const howManyPerLoop = counter * 8;
 
