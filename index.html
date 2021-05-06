@@ -6,26 +6,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>szyfrowanie zdjęć</title>
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
-<body>
-  <div>
-    <input type='file'/>
-    <select name="Encryption" id="encryptionSelector">
-      <option value="0">Kodowanie</option>
-      <option value="1">Dekodowanie</option>
-    </select>
-    <select name="EncryptionAlgorytm" id="encryptionSelectorAlgorytm">
-      <option value="0">DES</option>
-      <option value="1">SDES</option>
-    </select>
-    <button id="encryptionButton"> Uruchom Algorytm</button>
-    <button id="saveButton"> Zapisz plik</button>
-    <br><img id="myImg" class="image" src="" alt="">
-    <div id="myProgress">
-      <div id="myBar"></div>
+<body style="background-color: rgba(89, 154, 214, 0.61)">
+  <div class="container-fluid">
+    <div class="row ">
+      <div class="col-1"></div>
+      <div class="col-10 img-thumbnail menu-bar" id="myProgress">
+        <p id="countBar">0%</p>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" id="myBar" role="progressbar"  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ></div>
+        </div>
+        
+      </div>
+      <div class="col-1"></div>
     </div>
-    <p id="countBar">0%</p>
-    <canvas id="myCanvas" class="canvas"></canvas>
+    <br>
+    <br>
+  <div class="row">
+    <div class="col-sm-12 col-md-2 col-lg-3"></div>
+    <div class="col-sm-12 col-md-12 col-lg-2 img-thumbnail menu">
+      <div class="custom-file">
+        <input type='file' class="custom-file-input"/>
+        <label class="custom-file-label" for="inputGroupFile01">Wybierz plik</label>
+      </div>
+      <select name="Encryption" class="custom-select" id="encryptionSelector">
+        <option value="0">Kodowanie</option>
+        <option value="1">Dekodowanie</option>
+      </select>
+      <select name="EncryptionAlgorytm" class="custom-select" id="encryptionSelectorAlgorytm">
+        <option value="0">DES</option>
+        <option value="1">SDES</option>
+      </select>
+      <button id="encryptionButton" class="btn btn-primary"> Uruchom Algorytm</button>
+      <button id="saveButton" class="btn btn-primary"> Zapisz plik</button>
+      <br>
+      <img id="myImg" class="image" src="" alt="">
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-lg-5">
+      <canvas id="myCanvas" class="canvas img-thumbnail"></canvas>
+    </div>
+
+  </div>
   </div>
 </body>
 <script src="./app.js" type="module" defer></script>

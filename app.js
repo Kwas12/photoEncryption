@@ -29,6 +29,10 @@ window.addEventListener("load", function () {
         img.src = URL.createObjectURL(this.files[0]);
         pictureDate.file = this.files[0];
       }
+      var elem = document.getElementById("myBar");
+      var countBar = document.getElementById("countBar");
+      elem.style.width = "0%";
+      countBar.innerHTML = "0%";
       setTimeout(() => setNewPictureInCanvas(), 100);
     });
 });
@@ -125,13 +129,17 @@ const save = function () {
   canvas.el.toBlob(function (blob) {
     // blob ready, download it
     let link = document.createElement("a");
-    link.download = pictureDate.file.name;
 
+    link.download = pictureDate.file.name.substring(
+      0,
+      pictureDate.file.name.lastIndexOf(".")
+    );
+    console.log(link.download);
     link.href = URL.createObjectURL(blob);
     link.click();
 
     // delete the internal blob reference, to let the browser clear memory from it
     URL.revokeObjectURL(link.href);
     console.log("Download compleat");
-  }, pictureDate.file.type);
+  }, "image/png");
 };

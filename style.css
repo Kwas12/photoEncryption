@@ -1,9 +1,27 @@
 .image {
   display: none;
 }
+
+.menu {
+  display: block;
+  background-color: aliceblue;
+  border-style: ridge;
+  box-shadow: 5px 10px #3a3a3aa8;
+}
+.menu-bar {
+  margin: 0, 0, 2%, 0;
+  display: block;
+  background-color: #ffffff;
+  border-style: ridge;
+  box-shadow: 5px 10px #3a3a3aa8;
+}
 .canvas {
-  width: 40vw;
+  width: 100vw;
   height: auto;
+  color: aliceblue;
+  background-color: rgb(240, 255, 246);
+  border-style: ridge;
+  box-shadow: 5px 10px #3a3a3aa8;
 }
 
 #myBar {
