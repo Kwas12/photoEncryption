@@ -125,7 +125,11 @@ const generateKeys = (key) => {
 
 const loopDES = (howManyTime, counter, howManyPerLoop) => {
   rgbCount = 0;
+<<<<<<< HEAD
   const numberCores = 8;
+=======
+  const numberCores = window.navigator.hardwareConcurrency -1;
+>>>>>>> 14efdb29dedcedd9d40e1d49017907428f99213b
   var workers = [];
 
   for (let cores = 0; cores < numberCores; cores++) {
